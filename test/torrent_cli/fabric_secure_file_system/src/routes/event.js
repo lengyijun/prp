@@ -3,6 +3,7 @@ var Fabric_Client = require('fabric-client');
 var path = require('path');
 var util = require('util');
 var os = require('os');
+var chaincode = require('./chaincode.js');
 
 var config = {channel:"mychannel", order_addr:'grpc://localhost:7050', peer_addr:'grpc://localhost:7051', event_addr:'grpc://localhost:7053'};
 var app_name = ["myapp", "keyExchange"];
@@ -74,7 +75,10 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path }).then((state_store) =
                 if (err) {
                     console.log("respondSecret", err);
                 } else {
-                  console.log("respondSecret", message.tx_id);
+                    console.log("respondSecret", message.tx_id);
+                    var file = doc.file.split('\u0000');
+                    filename = file[3];
+                    chaincode.decryfile(doc.secret, filename);
                 }
             });
         },

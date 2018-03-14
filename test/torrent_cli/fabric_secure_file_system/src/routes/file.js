@@ -64,7 +64,8 @@ router.route('/').get(function(req, res, next) {
                     chainId: network.clientList[req.session.user].config.channel,
                     txId: _txId
                 };
-                return chaincode.invoke(req, res, next, request);
+                res.send({success:true, tx_id:"afshtsht"});
+                //return chaincode.invoke(req, res, next, request);
             }
         });
     });
@@ -93,9 +94,10 @@ router.route('/').get(function(req, res, next) {
     };
     return chaincode.invoke(req, res, next, request);
 });
+
 router.get('/download',function(req,res){
-    var file=__dirname+"/"+req.body.filename;
+    var file = path.join(__dirname, '../../../decryptdata/' + req.body.filename);
     res.download(file);
-})
+});
 
 module.exports = router;

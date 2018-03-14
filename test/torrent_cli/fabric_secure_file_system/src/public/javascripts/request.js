@@ -74,14 +74,14 @@ $(function() {
               url: "/file/download",
               type: "get",
               data: {filename: filename},
-              success: function(data, status){
-                  console.log("download success");
-                  },
-                  error: function(data, status) {
-
+              success: function(data){
+                console.log("download success");
+              },
+              error: function(data) {
                 alert("download failed");
-                  }
-              });
+              }
+            });
+
           });
         });
 

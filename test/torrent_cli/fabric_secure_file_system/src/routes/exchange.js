@@ -19,29 +19,15 @@ router.route('/').put(function(req, res, next) {
     }
     _query.push(data.secret);
 
-    //todo
-    var filename = "";
-    var request = global.dbHandler.getModel('request');
-    request.findOne({tx_id: data.tx_id}, function(err, doc) {
-        if (err) {
-            console.log("requestSecret", err);
-        } else {
-            if (doc) {
-                var file = doc.file.split('\u0000');
-                filename = file[3];
-                chaincode.decryfile(data.secret, filename);
-                var _txId = network.clientList[req.session.user].fabric_client.newTransactionID();
-                const request = {
-                    chaincodeId: network.clientList[req.session.user].app_name[1],
-                    fcn: 'respondSecret',
-                    args: _query,
-                    chainId: network.clientList[req.session.user].config.channal,
-                    txId: _txId
-                };
-                chaincode.invoke(req, res, next, request);
-            }
-        }
-    });
+    var _txId = network.clientList[req.session.user].fabric_client.newTransactionID();
+    const request = {
+        chaincodeId: network.clientList[req.session.user].app_name[1],
+        fcn: 'respondSecret',
+        args: _query,
+        chainId: network.clientList[req.session.user].config.channal,
+        txId: _txId
+    };
+    return chaincode.invoke(req, res, next, request);
 
 }).post(function(req, res, next) {
     // POST /exchange
